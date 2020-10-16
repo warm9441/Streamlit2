@@ -2,6 +2,13 @@
 
 
 import streamlit as st
+import pandas as pd
+import numpy as np
+import folium as fo
+from streamlit_folium import folium_static
+import geopandas as gp
+import altair as alt
+import pydeck as pdk
 
 st.title("HWstreamlit_6030816421")
 st.markdown("Date&Hours")
@@ -18,7 +25,6 @@ elif select_date=='04/01/2019':
 elif select_date=='05/01/2019':
     DATA_URL = ("https://raw.githubusercontent.com/warm9441/Streamlit2/master/ODsample/05012019.csv")
 
-import pandas as pd
 
 DATE_TIME = "timestart"
 
@@ -38,13 +44,12 @@ data = data[data[DATE_TIME].dt.hour == hour]
 if st.checkbox("Show raw data", False):
     '## Raw data at %sh' % hour,data
 
-import geopandas as gp
 
 crs = "EPSG:4326"
 geometry = gp.points_from_xy(data.lonstartl,data.latstartl)
 geo_df  = gp.GeoDataFrame(data,crs=crs,geometry=geometry)
 
-import folium as fo
+
 
 
 st.subheader("Map at %i:00" %hour)
@@ -71,12 +76,12 @@ for lat, lon,t, label in zip(latitudes, longitudes,time, labels):
          ).add_to(station_map)
 folium_static(station_map)
 
-import numpy as np
+
 
 st.subheader("Geo data between %i:00 and %i:00" % (hour, (hour + 1) % 24))
 midpoint = (np.average(data["latstartl"]), np.average(data["lonstartl"]))
 
-import pydeck as pdk
+
 
 st.write(pdk.Deck(
     map_style="mapbox://styles/mapbox/light-v9",
@@ -107,7 +112,7 @@ filtered = data[
 hist = np.histogram(filtered[DATE_TIME].dt.minute, bins=60, range=(0, 60))[0]
 chart_data = pd.DataFrame({"minute": range(60), "pickups": hist})
 
-import altair as alt
+
 
 st.altair_chart(alt.Chart(chart_data)
     .mark_area(
