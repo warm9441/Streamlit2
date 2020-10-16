@@ -64,9 +64,6 @@ longitudes = list(data.lonstartl)
 time = list(data.timestart)
 labels = list(data.n)
 
-from streamlit_folium import folium_static
-
-
 for lat, lon,t, label in zip(latitudes, longitudes,time, labels):
     if data.timestart[label].hour==hour and data.timestart[label].year!=2018:
         fo.Marker(
